@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * SelectBody强转PlainSelect不支持sql里面带union
+ * SelectBody强转PlainSelect不支持sql里面最外层带union
  * 临时解决方法
  * @date 2019/7/31
  */
