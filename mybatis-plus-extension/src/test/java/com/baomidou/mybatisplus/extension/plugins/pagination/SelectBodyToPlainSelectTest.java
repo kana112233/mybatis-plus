@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * SelectBody强转PlainSelect不支持sql里面最外层带union
  * 临时解决方法
- * 提交pr解决
+ * 用处SetOperationList理带union的sql
  */
 class SelectBodyToPlainSelectTest {
 
