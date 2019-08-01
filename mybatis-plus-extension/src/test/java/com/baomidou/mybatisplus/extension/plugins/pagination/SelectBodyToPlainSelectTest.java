@@ -26,7 +26,7 @@ class SelectBodyToPlainSelectTest {
     private String actualSql = "SELECT * FROM test";
 
     private String originalUnionSql = "select * from test union select * from test2";
-    private String actualUnionSql = "SELECT * FROM test UNION SELECT * FROM test2";
+    private String actualUnionSql = "SELECT * FROM test UNION SELECT * FROM test2 ORDER BY column";
 
     @Test
     void testSelectBodyToPlainSelectSuccess() {

@@ -105,12 +105,14 @@ public class PaginationInterceptor extends AbstractSqlParserHandler implements I
                 if (selectStatement.getSelectBody() instanceof PlainSelect) {
                     PlainSelect plainSelect = (PlainSelect) selectStatement.getSelectBody();
                     List<OrderByElement> orderByElements = plainSelect.getOrderByElements();
-                    addOrderByElements(orderList, orderByElements);
+                    List<OrderByElement> orderByElementsReturn = addOrderByElements(orderList, orderByElements);
+                    plainSelect.setOrderByElements(orderByElementsReturn);
                     return plainSelect.toString();
                 } else if (selectStatement.getSelectBody() instanceof SetOperationList) {
                     SetOperationList setOperationList = (SetOperationList) selectStatement.getSelectBody();
                     List<OrderByElement> orderByElements = setOperationList.getOrderByElements();
-                    addOrderByElements(orderList, orderByElements);
+                    List<OrderByElement> orderByElementsReturn = addOrderByElements(orderList, orderByElements);
+                    setOperationList.setOrderByElements(orderByElementsReturn);
                     return setOperationList.toString();
                 } else if (selectStatement.getSelectBody() instanceof WithItem) {
                     // todo: don't known how to resole
