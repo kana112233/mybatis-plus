@@ -16,6 +16,9 @@ class JsqlParserCountOptimizeTest {
 
     @Test
     void parserLeftJoin() {
+        /* 开启优化 */
+        parser.setOptimizeJoin(true);
+
         /* 能进行优化的 SQL */
         assertThat(parser.parser(metaObject, "select * from user u LEFT JOIN role r ON r.id = u.role_id WHERE u.xx = ?").getSql())
             .isEqualTo("SELECT COUNT(1) FROM user u WHERE u.xx = ?");
