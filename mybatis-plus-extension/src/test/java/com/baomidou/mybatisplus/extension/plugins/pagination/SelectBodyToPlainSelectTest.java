@@ -2,6 +2,10 @@ package com.baomidou.mybatisplus.extension.plugins.pagination;
 
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import net.sf.jsqlparser.JSQLParserException;
+import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import net.sf.jsqlparser.statement.select.PlainSelect;
+import net.sf.jsqlparser.statement.select.Select;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +19,27 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 用SetOperationList处理sql带union的语句
  */
 class SelectBodyToPlainSelectTest {
+
+    /**
+     * 报错的测试
+     */
+    @Test
+    void testSelectBodyToPlainSelectThrowException() {
+        Select selectStatement = null;
+        try {
+            String originalUnionSql = "select * from test union select * from test";
+            selectStatement = (Select) CCJSqlParserUtil.parse(originalUnionSql);
+        } catch (JSQLParserException e) {
+            e.printStackTrace();
+        }
+        assert selectStatement != null;
+        try {
+            PlainSelect plainSelect = (PlainSelect) selectStatement.getSelectBody();
+            assert false;
+        } catch (Exception e) {
+            assertThat(e.getMessage()).isEqualTo("net.sf.jsqlparser.statement.select.SetOperationList cannot be cast to net.sf.jsqlparser.statement.select.PlainSelect");
+        }
+    }
 
     private Page<?> page = new Page<>();
 
