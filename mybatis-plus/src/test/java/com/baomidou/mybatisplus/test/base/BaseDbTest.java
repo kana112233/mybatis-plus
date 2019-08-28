@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -95,7 +96,7 @@ public abstract class BaseDbTest {
             commonDataMapper.insert(new CommonData().setTestInt(i).setTestStr(str).setId(id)
                 .setTestEnum(TestEnum.ONE));
             commonLogicDataMapper.insert(new CommonLogicData().setTestInt(i).setTestStr(str).setId(id));
-            resultMapEntityMapper.insert(new ResultMapEntity().setId(id).setList(list).setMap(map));
+            resultMapEntityMapper.insert(new ResultMapEntity().setId(id).setList(list).setMap(map).setMapp(map));
             this.insertForeach(id, i, str);
         }
     }
@@ -222,6 +223,7 @@ public abstract class BaseDbTest {
         ResultMapEntity resultMapEntity = resultMapEntityMapper.selectById(id);
         assertNotNull(resultMapEntity);
         assertTrue(CollectionUtils.isNotEmpty(resultMapEntity.getMap()));
+        assertTrue(CollectionUtils.isNotEmpty(resultMapEntity.getMapp()));
         assertTrue(CollectionUtils.isNotEmpty(resultMapEntity.getList()));
         this.selectById(id);
     }
@@ -287,6 +289,14 @@ public abstract class BaseDbTest {
         assertThat(commonLogicData).isNotEmpty();
         assertThat(commonLogicData.get(0)).isNotNull();
 
+        List<ResultMapEntity> resultMapEntities = resultMapEntityMapper.selectList(Wrappers.<ResultMapEntity>lambdaQuery()
+            .eq(ResultMapEntity::getId, id));
+        assertThat(resultMapEntities).isNotEmpty();
+        assertThat(resultMapEntities.get(0)).isNotNull();
+        assertThat(resultMapEntities.get(0).getList()).isNotEmpty();
+        assertThat(resultMapEntities.get(0).getMap()).isNotEmpty();
+        assertThat(resultMapEntities.get(0).getMapp()).isNotEmpty();
+
         this.selectList(id);
     }
 
@@ -302,6 +312,10 @@ public abstract class BaseDbTest {
         assertThat(commonLogicMaps).isNotEmpty();
         assertThat(commonLogicMaps.get(0)).isNotEmpty();
 
+        List<Map<String, Object>> resultMapEntityMaps = resultMapEntityMapper.selectMaps(Wrappers.query());
+        assertThat(resultMapEntityMaps).isNotEmpty();
+        assertThat(resultMapEntityMaps.get(0)).isNotEmpty();
+
         this.selectMaps();
     }
 
@@ -310,7 +324,7 @@ public abstract class BaseDbTest {
     @Test
     void a16_selectPage() {
         Page<CommonData> page = new Page<>(1, 5);
-        page.setDesc("c_time", "u_time");
+        page.addOrder(OrderItem.descs("c_time", "u_time"));
         IPage<CommonData> dataPage = commonDataMapper.selectPage(page, null);
         assertSame(dataPage, page);
         assertNotEquals(0, dataPage.getRecords().size());
@@ -328,7 +342,7 @@ public abstract class BaseDbTest {
 
 
         Page<CommonData> commonDataPage = new Page<>(1, 5);
-        commonDataPage.setDesc("c_time", "u_time");
+        commonDataPage.addOrder(OrderItem.descs("c_time", "u_time"));
         IPage<CommonData> commonDataDataPage = commonDataMapper.myPage(commonDataPage);
         assertSame(commonDataDataPage, commonDataPage);
         assertNotEquals(0, commonDataDataPage.getRecords().size());

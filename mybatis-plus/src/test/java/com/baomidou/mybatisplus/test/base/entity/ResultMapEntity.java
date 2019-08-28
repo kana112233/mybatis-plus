@@ -17,6 +17,7 @@ package com.baomidou.mybatisplus.test.base.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.test.base.type.JsonTypeHandler;
 import com.baomidou.mybatisplus.test.base.type.ListTypeHandler;
 import com.baomidou.mybatisplus.test.base.type.MapTypeHandler;
 import lombok.Data;
@@ -45,4 +46,6 @@ public class ResultMapEntity {
     private List<String> list;
     @TableField(typeHandler = MapTypeHandler.class)
     private Map<String, Object> map;
+    @TableField(typeHandler = JsonTypeHandler.class)
+    private Map<String, Object> mapp;
 }

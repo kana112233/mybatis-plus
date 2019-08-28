@@ -15,7 +15,6 @@
  */
 package com.baomidou.mybatisplus.core.config;
 
-import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
@@ -47,13 +46,6 @@ public class GlobalConfig implements Serializable {
      * 是否开启 LOGO
      */
     private boolean banner = true;
-    /**
-     * 缓存 Sql 解析初始化
-     *
-     * @deprecated 3.1.1 不再需要这个属性, 现在是全局开启状态
-     */
-    @Deprecated
-    private boolean sqlParserCache = false;
     /**
      * 机器 ID 部分
      */
@@ -101,14 +93,6 @@ public class GlobalConfig implements Serializable {
 
     @Data
     public static class DbConfig {
-
-        /**
-         * 数据库类型
-         *
-         * @deprecated 3.1.1 不再需要, mp不应该也不需要关心数据库类型
-         */
-        @Deprecated
-        private DbType dbType = DbType.OTHER;
         /**
          * 主键类型（默认 ID_WORKER）
          */
@@ -136,13 +120,6 @@ public class GlobalConfig implements Serializable {
          */
         private boolean tableUnderline = true;
         /**
-         * String 类型字段 LIKE
-         *
-         * @deprecated 3.1.1 后续将删除这个属性
-         */
-        @Deprecated
-        private boolean columnLike = false;
-        /**
          * 大写命名
          */
         private boolean capitalMode = false;
@@ -159,35 +136,22 @@ public class GlobalConfig implements Serializable {
          */
         private String logicNotDeleteValue = "0";
         /**
-         * 字段验证策略
-         *
-         * @deprecated 3.1.2 please use {@link #insertStrategy} and {@link #updateStrategy} and {@link #selectStrategy}
-         */
-        @Deprecated
-        private FieldStrategy fieldStrategy = FieldStrategy.NOT_NULL;
-        /**
          * 字段验证策略之 insert
-         * 目前没有默认值,等 {@link #fieldStrategy} 完全去除掉,会给个默认值 NOT_NULL
-         * 没配则按 {@link #fieldStrategy} 为准
          *
          * @since 3.1.2
          */
-        private FieldStrategy insertStrategy;
+        private FieldStrategy insertStrategy = FieldStrategy.NOT_NULL;
         /**
          * 字段验证策略之 update
-         * 目前没有默认值,等 {@link #fieldStrategy} 完全去除掉,会给个默认值 NOT_NULL
-         * 没配则按 {@link #fieldStrategy} 为准
          *
          * @since 3.1.2
          */
-        private FieldStrategy updateStrategy;
+        private FieldStrategy updateStrategy = FieldStrategy.NOT_NULL;
         /**
          * 字段验证策略之 select
-         * 目前没有默认值,等 {@link #fieldStrategy} 完全去除掉,会给个默认值 NOT_NULL
-         * 没配则按 {@link #fieldStrategy} 为准
          *
          * @since 3.1.2
          */
-        private FieldStrategy selectStrategy;
+        private FieldStrategy selectStrategy = FieldStrategy.NOT_NULL;
     }
 }
