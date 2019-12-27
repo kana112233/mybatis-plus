@@ -178,6 +178,10 @@ subprojects {
         exclude("**/generator/**")
         exclude("**/mysql/**")
         exclude("**/phoenix/**")
+        testLogging {
+            // Show that tests are run in the command-line output
+            events 'started', 'passed'
+        }
     }
 
     task javadocJar(type: Jar) {
